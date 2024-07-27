@@ -1,4 +1,4 @@
 package Models;
 
-public class Bill {
+public class Bill extends BaseModel{
 }
