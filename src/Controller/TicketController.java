@@ -2,11 +2,15 @@ package Controller;
 
 import DTOS.GenerateTicketRequestDto;
 import DTOS.GenerateTicketResponseDto;
+import DTOS.ResposneStatus;
 import Models.Ticket;
 import Models.VehicleType;
 import Service.TicketService;
 
-import Exception.InvalidGateException;
+//import Exception.InvalidGateException;
+//import Exception.InvalidParkingLotException;
+import Exception.*;
+
 
 
 public class TicketController {
@@ -39,13 +43,32 @@ public class TicketController {
         try{
             ticket= ticketService.GenarateTicket(gateId,vehicalNumber,vehicleType);
         }catch (InvalidGateException e) {
-          response.se
+          response.setMessage("Invalid Gate");
+          response.setResposneStatus(ResposneStatus.FAILURE);
+          return response;
+        }catch (InvalidParkingLotException e) {
+
+            response.setMessage("Invalid Parking Lot");
+            response.setResposneStatus(ResposneStatus.FAILURE);
+            return response;
+        }catch (NoSpotFoundException e){
+            response.setMessage("No Spot Found");
+            response.setResposneStatus(ResposneStatus.SUCCESS);
+            return response;
         }
 
+        response.setTicketId(ticket.getId());
+        response.setOperatorName(ticket.getCurrentOperator().getOperatorName());
+        response.setSpotNumber(ticket.getParkingSpot().getSpotNumber());
+        response.setVehicleNumber(ticket.getVehicle().getVehicleName());
+        response.setMessage("Ticket Generated");
+        response.setResposneStatus(ResposneStatus.SUCCESS);
+
+        return response;
 
 
 
-        return null;
+        //return null;
 
     }
 
