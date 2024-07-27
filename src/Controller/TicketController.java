@@ -6,6 +6,9 @@ import Models.Ticket;
 import Models.VehicleType;
 import Service.TicketService;
 
+import Exception.InvalidGateException;
+
+
 public class TicketController {
 
     private TicketService ticketService;
@@ -35,8 +38,8 @@ public class TicketController {
 
         try{
             ticket= ticketService.GenarateTicket(gateId,vehicalNumber,vehicleType);
-        }catch (Exception e) {
-            e.printStackTrace();
+        }catch (InvalidGateException e) {
+          response.se
         }
 
 
