@@ -3,6 +3,7 @@ package Repository;
 import Models.Ticket;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.TreeMap;
 
 public class TicketRepository {
@@ -15,5 +16,9 @@ public class TicketRepository {
         lastSavedId += 1;
         tickets.put(lastSavedId, ticket);
         return ticket;
+    }
+
+    public Optional<Ticket> findTicketById(long ticketId) {
+        return Optional.ofNullable(tickets.get(ticketId));
     }
 }

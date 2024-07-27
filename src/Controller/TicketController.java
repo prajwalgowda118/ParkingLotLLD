@@ -71,5 +71,21 @@ public class TicketController {
         //return null;
 
     }
+    public long feeCalculation(long ticketId) throws InvaildTicketException
+    {
+
+            long feeCalculation=0;
+            try {
+
+                feeCalculation = ticketService.feeCalucation(ticketId);
+
+            }catch (InvaildTicketException e) {
+                throw new InvaildTicketException();
+
+            }
+            return feeCalculation;
+
+
+    }
 
 }

@@ -25,4 +25,10 @@ public class ParkingLotRepository {
 
 
     };
+
+    public ParkingLot saveParkingLot(ParkingLot parkingLot){
+        parkingLotMap.put(parkingLot.getId(), parkingLot);
+        return parkingLot;
+
+    }
 }

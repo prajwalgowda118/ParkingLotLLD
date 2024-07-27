@@ -17,4 +17,11 @@ public class GateRepository {
        }
        return Optional.empty();
     }
+
+    public Gate save(Gate gate){
+
+        gates.put(gate.getId(), gate);
+        return gate;
+
+    }
 }

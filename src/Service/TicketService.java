@@ -8,8 +8,9 @@ import Repository.ParkingLotRepository;
 import Repository.TicketRepository;
 import Repository.VehicleRepository;
 import Exception.InvalidParkingLotException;
+import Strategies.FeeStrategies.FeeCalculationStrategies;
 import Strategies.SpotAssignmentStrategies.SpotAssignment;
-import Exception.NoSpotFoundException;
+import Exception.*;
 
 import java.util.Date;
 import java.util.Optional;
@@ -22,18 +23,21 @@ public class TicketService {
     private ParkingLotRepository parkingLotRepository;
     private SpotAssignment spotAssignment;
     private TicketRepository ticketRepository;
+    private FeeCalculationStrategies feeCalculationStrategies;
 
 
     public TicketService(  GateRepository gateRepository
                          , VehicleRepository vehicleRepository
                          , ParkingLotRepository parkingLotRepository
-                        , SpotAssignment spotAssignment, TicketRepository ticketRepository)
+                        , SpotAssignment spotAssignment, TicketRepository ticketRepository
+                        ,FeeCalculationStrategies feeCalculationStrategies)
     {
         this.gateRepository=gateRepository;
         this.vehicleRepository=vehicleRepository;
         this.parkingLotRepository=parkingLotRepository;
         this.spotAssignment=spotAssignment;
         this.ticketRepository=ticketRepository;
+        this.feeCalculationStrategies=feeCalculationStrategies;
     }
 
     public Ticket GenarateTicket(long gateID, String vehicalNumber, VehicleType vehicleType) throws InvalidGateException, InvalidParkingLotException,NoSpotFoundException
@@ -88,6 +92,25 @@ public class TicketService {
         ticket.setParkingSpot(spot.get());
 
         return ticketRepository.save(ticket);
+
+    }
+
+    public long feeCalucation(long ticketId) throws InvaildTicketException {
+
+        Optional<Ticket> ticketOptional = ticketRepository.findTicketById(ticketId);
+        if (!ticketOptional.isPresent()) {
+            throw new InvaildTicketException();
+
+        }
+
+        Ticket ticket = ticketOptional.get();
+        long durationInHours = (new Date().getTime() - ticket.getEntryDate().getTime()) / (1000 * 60 * 60);
+
+        Long ans=feeCalculationStrategies.CalculateFee(durationInHours,ticket.getVehicle().getVehicleType());
+
+        return ans;
+
+
 
     }
 }
