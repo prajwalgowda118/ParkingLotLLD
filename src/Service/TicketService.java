@@ -1,22 +1,24 @@
 package Service;
 
-import Models.Gate;
-import Models.Operator;
-import Models.Ticket;
-import Models.VehicleType;
+import Models.*;
 import Repository.GateRepository;
 
 import Exception.InvalidGateException;
+import Repository.VehicleRepository;
+
 import java.util.Optional;
 
 public class TicketService {
 
 
     private GateRepository gateRepository;
+    private VehicleRepository vehicleRepository;
 
-    public TicketService(GateRepository gateRepository)
+    public TicketService(GateRepository gateRepository
+    , VehicleRepository vehicleRepository   )
     {
         this.gateRepository=gateRepository;
+        this.vehicleRepository=vehicleRepository;
     }
 
     public Ticket GenarateTicket(long gateID, String vehicalNumber, VehicleType vehicleType) throws InvalidGateException {
@@ -29,10 +31,16 @@ public class TicketService {
         if (!gateOptional.isPresent()) {
             throw new InvalidGateException();
         }
-        Gate gate=gateOptional.get();
 
+        Gate gate=gateOptional.get();
         Operator currentOperator=gate.getOperator();
 
+
+        Optional<Vehicle> vehOptional=gateRepository.FindGateByID(gateID);
+
+        if (!gateOptional.isPresent()) {
+            throw new InvalidGateException();
+        }
 
 
         return null;
