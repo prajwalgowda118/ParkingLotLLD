@@ -1,5 +1,6 @@
 package Models;
 
+
 public class Vehicle extends BaseModel{
 
     private String vehicleName;
