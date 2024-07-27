@@ -2,13 +2,19 @@ package Repository;
 
 import Models.Gate;
 
+import java.util.Map;
 import java.util.Optional;
+import java.util.TreeMap;
 
 public class GateRepository {
 
+    private Map<Long, Gate> gates = new TreeMap<>();
 
     public Optional<Gate> FindGateByID(long gateID){
 
-        return Optional.empty();
+       if(gates.containsKey(gateID)){
+           return Optional.of(gates.get(gateID));
+       }
+       return Optional.empty();
     }
 }
